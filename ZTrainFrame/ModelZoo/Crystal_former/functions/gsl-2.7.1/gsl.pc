@@ -1,0 +1,11 @@
+prefix=/cpfs01/projects-HDD/pr-4ab075706afc47d29_HDD/zhouzhijian/workspace/Punimol/alg
+exec_prefix=/cpfs01/projects-HDD/pr-4ab075706afc47d29_HDD/zhouzhijian/workspace/Punimol/alg
+libdir=/cpfs01/projects-HDD/pr-4ab075706afc47d29_HDD/zhouzhijian/workspace/Punimol/alg/lib
+includedir=/cpfs01/projects-HDD/pr-4ab075706afc47d29_HDD/zhouzhijian/workspace/Punimol/alg/include
+GSL_CBLAS_LIB=-lgslcblas
+
+Name: GSL
+Description: GNU Scientific Library
+Version: 2.7.1
+Libs: -L/cpfs01/projects-HDD/pr-4ab075706afc47d29_HDD/zhouzhijian/workspace/Punimol/alg/lib -lgsl ${GSL_CBLAS_LIB} -lm -lm 
+Cflags: -I/cpfs01/projects-HDD/pr-4ab075706afc47d29_HDD/zhouzhijian/workspace/Punimol/alg/include
