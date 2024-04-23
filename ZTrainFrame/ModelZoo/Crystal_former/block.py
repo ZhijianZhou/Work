@@ -327,7 +327,6 @@ class CrystalLayer(nn.Module):
             h = self.norm2(h+_h)
 
         batch.x = h
-        batch.inf_edge_attr = new_inf_edge_attr
         batch.edge_attr = new_edge_attr
         return batch
 

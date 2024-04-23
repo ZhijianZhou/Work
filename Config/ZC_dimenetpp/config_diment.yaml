@@ -1,0 +1,59 @@
+model:
+  task: dimenetpp
+  name: dimenetpp
+  dataset: ZC
+  exp_path: /cpfs01/projects-HDD/cfff-282dafecea22_HDD/zhouzhijian/Work/Experiment
+  log_path: /cpfs01/projects-HDD/cfff-282dafecea22_HDD/zhouzhijian/Work/Log
+  batch_size: 512
+  epoch_num: 100
+  learning_rate: 0.0005
+  seed: 3407
+  print_steps: 50
+  val_freq: 2
+  
+  hidden_channels: 128
+  out_channels: 1
+  num_blocks: 4
+  int_emb_size: 64
+  basis_emb_size: 8
+  out_emb_channels: 256
+  num_spherical: 7
+  num_radial: 6
+  cutoff: 5.0
+  max_num_neighbors: 32
+  envelope_exponent: 5
+  num_before_skip: 1
+  num_after_skip: 1
+  num_output_layers: 3
+
+loss:
+  loss_fuction: {"energy": "mae"}
+  real_loss_need: True
+  loss_weight: {"energy": 1.0}
+  norm_need: False
+  
+dataset:
+  name: ZCDataset
+  config_path: False
+  target: ["energy"]
+  root: /cpfs01/projects-HDD/cfff-282dafecea22_HDD/zhouzhijian/Work/Data/ZC_test
+  force: False
+  processdir: processed
+
+schedular:
+  warmup_steps: 1000
+  max_lr: 0.0005
+  base_lr: 0.0000001
+  strategy: "Linear"
+  strategy_param:
+    mode: "min"
+    factor: 0.8
+    patience: 5
+    start_factor: 1
+    end_factor: 0.01
+    total_iters: 100
+
+
+
+
+

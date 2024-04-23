@@ -36,17 +36,17 @@ class CrystalNet(nn.Module):
         )
         self.inf_edge_feature = inf_edge_feature
         self.potentials = [-0.801, -0.074, 0.145] 
-        if self.inf_edge_feature:
-            self.inf_edge_embedding = RBFExpansion(
-                vmin=-5.0,
-                vmax=5.0,
-                bins=40,
-                type="gaussian"
-            )
+        
+        self.inf_edge_embedding = RBFExpansion(
+            vmin=-5.0,
+            vmax=5.0,
+            bins=40,
+            type="gaussian"
+        )
 
-            self.infinite_linear = nn.Linear(40, dim_h)
+        self.infinite_linear = nn.Linear(40, dim_h)
 
-            self.infinite_bn = nn.BatchNorm1d(dim_h)
+        self.infinite_bn = nn.BatchNorm1d(dim_h)
 
         layers = []
         
@@ -71,11 +71,14 @@ class CrystalNet(nn.Module):
     def forward(self, batch):
         batch.x = self.atom_embedding(batch.x)
         batch.edge_attr = self.edge_embedding(batch.edge_attr)
-        if self.inf_edge_feature:
-            inf_feat = sum([batch.inf_edge_attr[:, i] * pot for i, pot in enumerate(self.potentials)])
-            inf_edge_features = self.inf_edge_embedding(inf_feat)
-            batch.inf_edge_attr = self.infinite_bn(F.softplus(self.infinite_linear(inf_edge_features)))
-        
+        inf_feat = sum([batch.inf_edge_attr[:, i] * pot for i, pot in enumerate(self.potentials)])
+        inf_edge_features = self.inf_edge_embedding(inf_feat)
+        batch.inf_edge_attr = self.infinite_bn(F.softplus(self.infinite_linear(inf_edge_features)))
+
+        edge_index = torch.cat([batch.edge_index, batch.inf_edge_index], 1)
+        edge_features = torch.cat([batch.edge_attr, batch.inf_edge_attr], 0)
+        batch.edge_index = edge_index
+        batch.edge_attr = edge_features
         for module in self.layers:
             batch = module(batch)
 

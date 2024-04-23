@@ -1,0 +1,58 @@
+model:
+  task: PotNet
+  name: potnet
+  dataset: dft_3d_formation_energy
+  exp_path: /cpfs01/projects-HDD/cfff-282dafecea22_HDD/zhouzhijian/Work/Experiment
+  log_path: /cpfs01/projects-HDD/cfff-282dafecea22_HDD/zhouzhijian/Work/Log
+  cuda_idx: 0
+  batch_size: 256
+  epoch_num: 500
+  learning_rate: 0.001
+  seed: 3407
+  print_steps: 50
+  val_freq: 1
+  
+  dim_h: 256
+  rbf_min: -4.0
+  rbf_max: 4.0
+  inf_edge_features: 64
+  layer_num: 3
+  inf_edge_feature_dim: 64
+  output_feature: 1
+  potentials: [-0.801, -0.074, 0.145]
+  atom_init: /cpfs01/projects-HDD/cfff-282dafecea22_HDD/zhouzhijian/Work/ZTrainFrame/ModelZoo/potnet/atom_init.json
+
+loss:
+  loss_fuction: {"FormationEnergyPeratom": "mse"}
+  real_loss_need: True
+  norm_need: True
+  loss_weight: {"FormationEnergyPeratom": 1.0}
+
+dataset:
+  name: CrystalDataset
+  config_path: /cpfs01/projects-HDD/cfff-282dafecea22_HDD/zhouzhijian/Work/Config/dft_3d_Crystal_former/config_crystal_former.json
+  target: ["FormationEnergyPeratom"]
+  root: /cpfs01/projects-HDD/cfff-282dafecea22_HDD/zhouzhijian/Work/Data/dft_3d_new
+  pretrain: False
+  inf_feature: True
+  self_edge_feature: False
+  processdir: processed
+
+schedular:
+  warmup_steps: 2000
+  max_lr: 0.001
+  base_lr: 0.0000001
+  strategy: "Linear"
+  strategy_param:
+    mode: "min"
+    factor: 0.9
+    patience: 10
+    start_factor: 1
+    end_factor: 0.0001
+    total_iters: 500
+  
+
+
+
+
+
